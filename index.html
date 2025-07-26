@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Калькулятор РеасфальтАНТ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 10px;
+      background: linear-gradient(to right, #e3f2fd, #539263);
+      margin: 0;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    h1 {
+      font-size: 22px;
+      text-align: center;
+      color: #333;
+      margin-top: 0;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 15px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 15px;
+    }
+    button {
+      margin: 25px auto 0;
+      padding: 8px 24px;
+      display: block;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .results {
+      margin-top: 25px;
+      background: #f1f8e9;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #c5e1a5;
+      font-size: 15px;
+    }
+    .unit-label {
+      font-size: 13px;
+      color: #777;
+      margin-top: 5px;
+    }
+    .unit-label2 {
+      font-size: 13px;
+      color: #777;
+      margin-top: 5px;
+    }
+    .optional {
+      font-size: 13px;
+      color: #999;
+    }
+    .lang-select {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+    @media (max-width: 600px) {
+      .lang-select {
+        position: static;
+        margin-bottom: 10px;
+        text-align: right;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="lang-select">
+      <select id="lang" onchange="changeLanguage()">
+        <option value="ru">🇷🇺 Русский</option>
+        <option value="en">🇬🇧 English</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="az">🇦🇿 Azərbaycan</option>
+        <option value="sr">🇷🇸 Srpski</option>
+      </select>
+    </div>
+
+    <h1 id="title">Калькулятор РеасфальтАНТ</h1>
+
+    <label id="massLabel"></label>
+    <input type="number" id="mAG" placeholder="">
+    <select id="mAGUnit">
+      <option value="kg">кг</option>
+      <option value="t">тонны</option>
+    </select>
+    <div class="unit-label" id="massUnit"></div>
+
+    <label id="rateLabel"></label>
+    <input type="text" id="A" placeholder="например, 0,01%">
+
+    <label id="naturalMoisture"></label>
+    <input type="text" id="w0" placeholder="например, 1,5%">
+
+    <label id="targetMoisture"></label>
+    <input type="text" id="w1" placeholder="например, 7%">
+
+    <label id="waterLabel"><span class="optional" id="optional">(необязательно)</span></label>
+    <input type="number" id="VH2O" placeholder="Введите объём воды, если известно">
+    <select id="VH2OUnit">
+      <option id="litrov" value="l">литры</option>
+      <option value="m3">кубы (м³)</option>
+    </select>
+    <div class="unit-label2" id="tinu">Единица измерения объёма воды</div>
+
+    <button id="calculateBtnT" onclick="calculate()">Получить результаты</button>
+
+    <div class="results" id="results"></div>
+  </div>
+
+  <script>
+    const translations = {
+      ru: {
+        title: "Калькулятор РеасфальтАНТ",
+        massLabel: "Масса АГ",
+        placeholdermAG: "укажите массу",
+        massUnit: "Единица измерения массы",
+        rateLabel: "Норма расхода РеасфальтАНТ (A), %",
+        placeholderA: "например, 0,01%",
+        naturalMoisture: "Естественная влажность АГ (w0), %",
+        placeholderW0: "например, 1,5%",
+        targetMoisture: "Требуемая влажность АГ (w1), %",
+        placeholderW1: "например, 7%",
+        waterLabel: "Количество воды в емкости (VH2O)",
+        placeholderVH2O:"введите объём воды, если известно",
+        litrov: 'литры',
+        unitWaterTinu: "Единица измерения объёма воды",
+        optional: "(необязательно)",
+        calculateBtnT: "Рассчитать",
+        results: {
+          header: "Результаты расчёта:",
+          mass: "Масса АГ",
+          QANT: "Количество РеасфальтАНТ (QANT)",
+          QH2O: "Количество воды (QH2O)",
+          Kra: "Коэффициент растворения (Kраств)",
+          VANT: "Норма дозирования на емкость (VANT)",
+          missingVH2O: "Введите объём емкости воды, чтобы рассчитать норму дозирования."
+        }
+      },
+      en: {
+        title: "ReasphaltANT Calculator",
+        massLabel: "Mass of AG",
+        placeholdermAG: "indicate the mass",
+        litrov: 'Test2',
+        massUnit: "Mass unit",
+        rateLabel: "ReasphaltANT Consumption Rate (A), %",
+        placeholderA: "for example, 0,01%",
+        naturalMoisture: "Natural moisture of AG (w0), %",
+        placeholderW0: "for example, 1,5%",
+        targetMoisture: "Target moisture of AG (w1), %",
+        placeholderW1: "for example, 7%",
+        waterLabel: "Water volume in tank (VH2O)",
+        placeholderVH2O:"enter the volume of water if known",
+        unitWaterTinu: "Water volume unit",
+        optional: "(optional)",
+        calculateBtnT: "Calculate",
+        results: {
+          header: "Calculation Results:",
+          mass: "Mass of AG",
+          QANT: "Amount of ReasphaltANT (QANT)",
+          QH2O: "Amount of water (QH2O)",
+          Kra: "Dilution coefficient (Kra)",
+          VANT: "Dosage per tank (VANT)",
+          missingVH2O: "Enter water volume to calculate dosage."
+        }
+      },
+      es: {
+        title: "Calculadora de ReasphaltANT",
+        massLabel: "Masa de AG",
+        placeholdermAG: "indicar la masa",
+        litrov: 'Test3',
+        massUnit: "Unidad de masa",
+        rateLabel: "Tasa de consumo de ReasphaltANT (A), %",
+        placeholderA: "por ejemplo, 0,01%",
+        naturalMoisture: "Humedad natural de AG (w0), %",
+        placeholderW0: "por ejemplo, 1,5%",
+        targetMoisture: "Humedad requerida de AG (w1), %",
+        placeholderW1: "por ejemplo, 7%",
+        waterLabel: "Volumen de agua en el tanque (VH2O)",
+        placeholderVH2O:"Ingrese el volumen de agua si lo conoce",
+        unitWaterTinu: "Unidad de volumen de agua",
+        optional: "(opcional)",
+        calculateBtnT: "Calcular",
+        results: {
+          header: "Resultados del cálculo:",
+          mass: "Masa de AG",
+          QANT: "Cantidad de ReasphaltANT (QANT)",
+          QH2O: "Cantidad de agua (QH2O)",
+          Kra: "Coeficiente de dilución (Kra)",
+          VANT: "Dosis por tanque (VANT)",
+          missingVH2O: "Introduce volumen de agua para calcular la dosis."
+        }
+      },
+      az: {
+        title: "ReasfaltANT Kalkulyatoru",
+        massLabel: "AG kütləsi",
+        placeholdermAG: "kütləsini göstərin",
+        litrov: 'test4',
+        massUnit: "Kütlə vahidi",
+        rateLabel: "ReasfaltANT Sərf Norması (A), %",
+        placeholderA: "məsələn, 0,01%",
+        naturalMoisture: "AG-nin təbii nəmliliyi (w0), %",
+        placeholderW0: "məsələn, 1,5%",
+        targetMoisture: "Tələb olunan nəmlilik (w1), %",
+        placeholderW1: "məsələn, 7%",
+        waterLabel: "Su həcmi (VH2O)",
+        placeholderVH2O:"məlumdursa suyun həcmini daxil edin",
+        unitWaterTinu: "Su həcmi vahidi",
+        optional: "(isteğe bağlı)",
+        calculateBtnT: "Hesabla",
+        results: {
+          header: "Hesablanma nəticələri:",
+          mass: "AG kütləsi",
+          QANT: "ReasfaltANT miqdarı (QANT)",
+          QH2O: "Su miqdarı (QH2O)",
+          Kra: "Həll etmə əmsalı (Kra)",
+          VANT: "Bir çən üçün dozaj (VANT)",
+          missingVH2O: "Dozajı hesablamaq üçün su həcmini daxil edin."
+        }
+      },
+      sr: {
+        title: "ReasfaltANT Kalkulator",
+        massLabel: "Masa AG-a",
+        placeholdermAG: "označite masu",
+        litrov: 'litara',
+        massUnit: "Jedinica mase",
+        rateLabel: "Norma potrošnje ReasfaltANT-a (A), %",
+        placeholderA: "na primer, 0,01%",
+        naturalMoisture: "Prirodna vlažnost AG-a (w0), %",
+        placeholderW0: "na primer, 1,5%",
+        targetMoisture: "Zahtevana vlažnost AG-a (w1), %",
+        placeholderW1: "na primer, 7%",
+        waterLabel: "Zapremina vode u rezervoaru (VH2O)",
+        placeholderVH2O:"unesite zapreminu vode ako je poznata",
+        unitWaterTinu: "Jedinica zapremine vode",
+        optional: "(opciono)",
+        calculateBtnT: "Izračunaj",
+        results: {
+          header: "Rezultati izračuna:",
+          mass: "Masa AG-a",
+          QANT: "Količina ReasfaltANT-a (QANT)",
+          QH2O: "Količina vode (QH2O)",
+          Kra: "Koeficijent rastvaranja (Kra)",
+          VANT: "Doza po rezervoaru (VANT)",
+          missingVH2O: "Unesite količinu vode za izračun doze."
+        }
+      }
+    };
+
+    function changeLanguage() {
+      const lang = document.getElementById("lang").value;
+      const t = translations[lang];
+      document.getElementById("title").innerText = t.title;
+      document.getElementById("massLabel").innerText = t.massLabel;
+      document.getElementById('mAG').placeholder = t.placeholdermAG;
+      document.getElementById("massUnit").innerText = t.massUnit;
+      document.getElementById("rateLabel").innerText = t.rateLabel;
+      document.getElementById("A").placeholder = t.placeholderA;
+      document.getElementById("naturalMoisture").innerText = t.naturalMoisture;
+      document.getElementById("w0").placeholder = t.placeholderW0;
+      document.getElementById("targetMoisture").innerText = t.targetMoisture;
+      document.getElementById("w1").placeholder = t.placeholderW1;
+      document.getElementById("waterLabel").innerText = t.waterLabel + " ";
+      document.getElementById("VH2O").placeholder = t.placeholderVH2O;
+      document.getElementById("optional").innerText = t.optional;
+      document.getElementById("tinu").innerText = t.unitWaterTinu;
+      document.getElementById("litrov").innerHTML = t.litrov;
+      document.getElementById("calculateBtnT").innerText = t.calculateBtnT;
+    }
+
+    function parsePercent(value) {
+      if (!value) return 0;
+      return parseFloat(value.replace('%', '').replace(',', '.'));
+    }
+
+    function calculate() {
+      const lang = document.getElementById("lang").value;
+      const t = translations[lang].results;
+
+      let mAG = parseFloat(document.getElementById("mAG").value);
+      const unit = document.getElementById("mAGUnit").value;
+      const A = parsePercent(document.getElementById("A").value);
+      const w0 = parsePercent(document.getElementById("w0").value);
+      const w1 = parsePercent(document.getElementById("w1").value);
+      let VH2O = document.getElementById("VH2O").value;
+      const VH2OUnit = document.getElementById("VH2OUnit").value;
+
+      if (unit === "t") mAG *= 1000;
+      VH2O = VH2OUnit === "m3" ? parseFloat(VH2O) * 1000 : parseFloat(VH2O);
+
+      if (isNaN(mAG) || isNaN(A) || isNaN(w0) || isNaN(w1)) {
+        document.getElementById("results").innerHTML = "<strong>⚠️ Please fill all required fields.</strong>";
+        return;
+      }
+
+      const QANT = mAG * A * 0.01;
+      const QH2O = mAG * (w1 - w0) * 0.01;
+      const Kra = QH2O / QANT;
+
+      let html = `<strong>${t.header}</strong><br><br>`;
+      html += `${t.mass}: <strong>${mAG.toFixed(2)}</strong> кг<br>`;
+      html += `${t.QANT}: <strong>${QANT.toFixed(2)}</strong> л<br>`;
+      html += `${t.QH2O}: <strong>${QH2O.toFixed(2)}</strong> л<br>`;
+      html += `${t.Kra}: <strong>${Kra.toFixed(2)}</strong><br>`;
+
+      if (!isNaN(VH2O)) {
+        const VANT = VH2O / Kra;
+        html += `${t.VANT}: <strong>${VANT.toFixed(2)}</strong> л`;
+      } else {
+        html += `<em>${t.missingVH2O}</em>`;
+      }
+
+      document.getElementById("results").innerHTML = html;
+    }
+
+    window.onload = () => {
+      const savedLang = localStorage.getItem("lang") || "ru";
+      document.getElementById("lang").value = savedLang;
+      changeLanguage();
+    };
+
+    document.getElementById("lang").addEventListener("change", () => {
+      const lang = document.getElementById("lang").value;
+      localStorage.setItem("lang", lang);
+      changeLanguage();
+    });
+
+    document.querySelectorAll('input[type="text"]').forEach(input => {
+      input.addEventListener('blur', () => {
+        if (!input.value.includes('%')) input.value = input.value + '%';
+        if (input.value === '0%') input.value = '0,0%';
+      });
+    });
+  </script>
+</body>
+</html>
