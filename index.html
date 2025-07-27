@@ -8,111 +8,19 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="theme-color" content="#ffffff">
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <title>Calculator ANT</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 10px;
-      background: linear-gradient(to right, #e3f2fd, #539263);
-      margin: 0;
-      padding-bottom: 80px;
-    }
-    #footer {
-      margin-top: 40px;
-      font-size: 13px;
-      color: #555;
-      text-align: center;
-      padding: 20px;
-      background: #f9f9f9;
-      border-top: 1px solid #ddd;
-    }
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      position: relative;
-    }
-    h1 {
-      font-size: 22px;
-      text-align: center;
-      color: #333;
-      margin-top: 0;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 15px;
-    }
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-      font-size: 15px;
-    }
-    button {
-      margin: 25px auto 0;
-      padding: 8px 24px;
-      display: block;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 15px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    .results {
-      margin-top: 25px;
-      background: #f1f8e9;
-      padding: 15px;
-      border-radius: 10px;
-      border: 1px solid #c5e1a5;
-      font-size: 15px;
-    }
-    .unit-label {
-      font-size: 13px;
-      color: #777;
-      margin-top: 5px;
-    }
-    .unit-label2 {
-      font-size: 13px;
-      color: #777;
-      margin-top: 5px;
-    }
-    .optional {
-      font-size: 13px;
-      color: #999;
-    }
-    .lang-select {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-    @media (max-width: 600px) {
-      .lang-select {
-        position: static;
-        margin-bottom: 10px;
-        text-align: right;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="footer.css">
+
 </head>
 <body>
+  <img src="./assets/safari-pinned-tab.svg" alt="ANT Logo" style="max-width: 120px; display: block; margin: 0 auto 10px;" />
   <div class="container">
-    <img src="logo.png" alt="ANT Logo" style="max-width: 120px; display: block; margin: 0 auto 10px;" />
     <div class="lang-select">
       <select id="lang" onchange="changeLanguage()">
         <option value="ru">🇷🇺 Русский</option>
@@ -155,9 +63,24 @@
     <button id="calculateBtn" onclick="calculate()">Рассчитать</button>
     <div class="results" id="results"></div>
   </div>
-  <div>
-    <div id="footer"></div>
-  </div>
+
+
+    		<footer class="footer-distributed">
+			<div class="footer-right">
+				<a href="#"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+				<a href="#"><i class="fa-solid fa-globe"></i></a>
+			</div>
+			<div class="footer-left">
+				<p class="footer-links">
+					<a class="link-1" href="#">Главная</a>
+					<a  class='LinkSt' href="#">РеасфальтАНТ</a>
+					<a class='LinkSt' href="#">Каменные дороги «ANT»</a>
+					<a class='LinkSt' href="#">Холодный ресайклинг «ANT»</a>
+					<a class='LinkSt' href="#">Подбор смеси</a>
+				</p>
+				<p class='CoSt'>«ANT-Engineering»LLC &copy; 2025</p>
+			</div>
+		</footer>
 
   <script>
     const translations = {
