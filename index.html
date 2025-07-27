@@ -15,11 +15,49 @@
 
   <title>Calculator ANT</title>
   <link rel="stylesheet" href="index.css">
-  <link rel="stylesheet" href="footer.css">
+  <link rel="stylesheet" href="./nav.css">
 
 </head>
 <body>
-  <img src="./assets/safari-pinned-tab.svg" alt="ANT Logo" style="max-width: 120px; display: block; margin: 0 auto 10px;" />
+  <div id="nav-bar">
+  <input type="checkbox" id="nav-toggle">
+  <div id="nav-header">
+    <label for="nav-toggle">
+      <span id="nav-toggle-burger"></span>
+    </label>
+    <span id="nav-title">
+      ANT-Tech
+    </span>
+    <hr>
+  </div>
+
+  <div id="nav-content">
+    <div class="nav-button"><i class="fas fa-calculator"></i><span>РеасфальтАНТ</span></div>
+    <div class="nav-button"><i class="fas fa-calculator"></i><span>Холодный ресайклинг «ANT»</span></div>
+    <div class="nav-button"><i class="fas fa-calculator"></i><span><a href="./stoneroads.html">Каменные дороги «ANT»</a></span></div>
+    <hr>
+    <div class="nav-button"><i class="fas fa-chart-line"></i><span>Подбор составов</span></div>
+    <div id="nav-content-highlight"></div>
+  </div>
+
+  <input type="checkbox" id="nav-footer-toggle">
+  <div id="nav-footer">
+    <div id="nav-footer-heading">
+      <div id="nav-footer-avatar">
+        <img src="./assets/logo.jpeg" />
+      </div>
+      <div id="nav-footer-titlebox">
+        <span id="nav-footer-title">Антон</span>
+        <span id="nav-footer-subtitle">Руководитель</span>
+      </div>
+      <label for="nav-footer-toggle"><i class="fas fa-caret-up"></i></label>
+    </div>
+    <div id="nav-footer-content">
+            Полученные данные в результате расчетов, являются рекомендованными, а не обязательными в использовании!<br><br>Будьте внимательны! Неверный ввод данных приведет к ошибкам в расчетах.
+    </div>
+  </div>
+</div>
+
   <div class="container">
     <div class="lang-select">
       <select id="lang" onchange="changeLanguage()">
@@ -63,24 +101,6 @@
     <button id="calculateBtn" onclick="calculate()">Рассчитать</button>
     <div class="results" id="results"></div>
   </div>
-
-
-    		<footer class="footer-distributed">
-			<div class="footer-right">
-				<a href="#"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
-				<a href="#"><i class="fa-solid fa-globe"></i></a>
-			</div>
-			<div class="footer-left">
-				<p class="footer-links">
-					<a class="link-1" href="#">Главная</a>
-					<a  class='LinkSt' href="#">РеасфальтАНТ</a>
-					<a class='LinkSt' href="#">Каменные дороги «ANT»</a>
-					<a class='LinkSt' href="#">Холодный ресайклинг «ANT»</a>
-					<a class='LinkSt' href="#">Подбор смеси</a>
-				</p>
-				<p class='CoSt'>«ANT-Engineering»LLC &copy; 2025</p>
-			</div>
-		</footer>
 
   <script>
     const translations = {
@@ -248,7 +268,6 @@
       document.getElementById("optional").innerText = t.optional;
       document.getElementById("tinu").innerText = t.unitWaterTinu;
       document.getElementById("calculateBtn").innerText = t.calculateBtn;
-      document.getElementById("footer").innerText = t.footer;
       document.querySelector("l").textContent = t.litrov;
       document.querySelector("#VH2OUnit option[value='m3']").textContent = t.cubes;
       document.querySelector("#VH2OUnit option[value='gal']").textContent = t.gallons;
@@ -329,5 +348,7 @@
     console.log("Кнопка:", document.getElementById("calculateBtn"));
     console.log("Текст перевода:", t.calculate);
   </script>
+
+
 </body>
 </html>

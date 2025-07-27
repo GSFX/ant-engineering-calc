@@ -1,0 +1,10 @@
+@media (max-width: 600px) {
+      .test1 {
+        font-size: 20vw;
+      }
+    }
+
+.test1 {
+    text-align: center;
+    font-size: 5vw;
+}
