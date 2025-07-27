@@ -1,7 +1,8 @@
 :root {
   --background: linear-gradient(to right, #e3f2fd, #539263);
   --navbar-width: 256px;
-  --navbar-width-min: 80px;
+  --navbar-width-min: 50px;
+  --navbar-height-min: 1px;
   --navbar-dark-primary: #18283b;
   --navbar-dark-secondary: #2c3e50;
   --navbar-light-primary: #f5f6fa;
@@ -17,6 +18,7 @@
 #nav-toggle:checked ~ #nav-content,
 #nav-toggle:checked ~ #nav-footer {
   width: var(--navbar-width-min);
+  height: var(--navbar-height-min);
 }
 
 #nav-toggle:checked ~ #nav-header #nav-title {
@@ -147,6 +149,7 @@ label[for="nav-toggle"] {
   position: absolute;
   top: -6px;
   width: 10px;
+  left: 5px;
   height: 2px;
   background: var(--navbar-light-primary);
   border-radius: 99px;
@@ -156,6 +159,7 @@ label[for="nav-toggle"] {
 
 #nav-toggle-burger:after {
   top: 6px;
+  left: 5px;
   transform: translate(2px, -8px) rotate(-30deg);
 }
 
@@ -397,4 +401,19 @@ label[for="nav-footer-toggle"] {
   background-color: #29d66b;
 }
 
+@media (max-width: 768px) {
+  #nav-bar {
+    top: 0;
+    height: 100vh;
+    border-radius: 0;
+    left: 0;
+  }
 
+  #nav-header {
+    min-height: 60px;
+  }
+
+  #nav-footer {
+    height: 60px;
+  }
+}
