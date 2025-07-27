@@ -3,13 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Калькулятор РеасфальтАНТ</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <title>Calculator ANT</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 10px;
       background: linear-gradient(to right, #e3f2fd, #539263);
       margin: 0;
+      padding-bottom: 80px;
+    }
+    #footer {
+      margin-top: 40px;
+      font-size: 13px;
+      color: #555;
+      text-align: center;
+      padding: 20px;
+      background: #f9f9f9;
+      border-top: 1px solid #ddd;
     }
     .container {
       max-width: 700px;
@@ -93,6 +112,7 @@
 </head>
 <body>
   <div class="container">
+    <img src="logo.png" alt="ANT Logo" style="max-width: 120px; display: block; margin: 0 auto 10px;" />
     <div class="lang-select">
       <select id="lang" onchange="changeLanguage()">
         <option value="ru">🇷🇺 Русский</option>
@@ -103,36 +123,40 @@
       </select>
     </div>
 
-    <h1 id="title">Калькулятор РеасфальтАНТ</h1>
+    <h1 id="title"></h1>
 
     <label id="massLabel"></label>
     <input type="number" id="mAG" placeholder="">
     <select id="mAGUnit">
       <option value="kg">кг</option>
       <option value="t">тонны</option>
+      <option value="lb">фунты</option>
     </select>
     <div class="unit-label" id="massUnit"></div>
 
     <label id="rateLabel"></label>
-    <input type="text" id="A" placeholder="например, 0,01%">
+    <input type="text" id="A" placeholder="">
 
     <label id="naturalMoisture"></label>
-    <input type="text" id="w0" placeholder="например, 1,5%">
+    <input type="text" id="w0" placeholder="">
 
     <label id="targetMoisture"></label>
-    <input type="text" id="w1" placeholder="например, 7%">
+    <input type="text" id="w1" placeholder="">
 
-    <label id="waterLabel"><span class="optional" id="optional">(необязательно)</span></label>
-    <input type="number" id="VH2O" placeholder="Введите объём воды, если известно">
+    <label id="waterLabel"><span class="optional" id="optional"></span></label>
+    <input type="number" id="VH2O" placeholder="">
     <select id="VH2OUnit">
-      <option id="litrov" value="l">литры</option>
+      <option value="l">литры</option>
       <option value="m3">кубы (м³)</option>
+      <option value="gal">галлоны</option>
     </select>
     <div class="unit-label2" id="tinu">Единица измерения объёма воды</div>
 
-    <button id="calculateBtnT" onclick="calculate()">Получить результаты</button>
-
+    <button id="calculateBtn" onclick="calculate()">Рассчитать</button>
     <div class="results" id="results"></div>
+  </div>
+  <div>
+    <div id="footer"></div>
   </div>
 
   <script>
@@ -153,7 +177,7 @@
         litrov: 'литры',
         unitWaterTinu: "Единица измерения объёма воды",
         optional: "(необязательно)",
-        calculateBtnT: "Рассчитать",
+        calculateBtn: "Рассчитать",
         results: {
           header: "Результаты расчёта:",
           mass: "Масса АГ",
@@ -161,14 +185,20 @@
           QH2O: "Количество воды (QH2O)",
           Kra: "Коэффициент растворения (Kраств)",
           VANT: "Норма дозирования на емкость (VANT)",
-          missingVH2O: "Введите объём емкости воды, чтобы рассчитать норму дозирования."
-        }
+          missingVH2O: "Введите объём емкости воды, чтобы рассчитать норму дозирования.",
+        },
+        footer: "Полученные данные в результате расчетов, являются рекомендованными, а не обязательными в использовании!<br><br>Будьте внимательны! Неверный ввод данных приведет к ошибкам в расчетах."
       },
       en: {
         title: "ReasphaltANT Calculator",
         massLabel: "Mass of AG",
         placeholdermAG: "indicate the mass",
-        litrov: 'Test2',
+        litrov: 'liters',
+        cubes: 'cubic meters',
+        gallons: 'gallons',
+        kg: 'kg',
+        tons: 'tons',
+        pounds: 'pounds',
         massUnit: "Mass unit",
         rateLabel: "ReasphaltANT Consumption Rate (A), %",
         placeholderA: "for example, 0,01%",
@@ -180,7 +210,7 @@
         placeholderVH2O:"enter the volume of water if known",
         unitWaterTinu: "Water volume unit",
         optional: "(optional)",
-        calculateBtnT: "Calculate",
+        calculateBtn: "Calculate",
         results: {
           header: "Calculation Results:",
           mass: "Mass of AG",
@@ -189,7 +219,9 @@
           Kra: "Dilution coefficient (Kra)",
           VANT: "Dosage per tank (VANT)",
           missingVH2O: "Enter water volume to calculate dosage."
-        }
+        },
+        footer: "The results of the calculations are recommendations and not mandatory for use.<br><br>Be careful! Incorrect input will lead to calculation errors."
+
       },
       es: {
         title: "Calculadora de ReasphaltANT",
@@ -207,7 +239,7 @@
         placeholderVH2O:"Ingrese el volumen de agua si lo conoce",
         unitWaterTinu: "Unidad de volumen de agua",
         optional: "(opcional)",
-        calculateBtnT: "Calcular",
+        calculateBtn: "Calcular",
         results: {
           header: "Resultados del cálculo:",
           mass: "Masa de AG",
@@ -234,7 +266,7 @@
         placeholderVH2O:"məlumdursa suyun həcmini daxil edin",
         unitWaterTinu: "Su həcmi vahidi",
         optional: "(isteğe bağlı)",
-        calculateBtnT: "Hesabla",
+        calculateBtn: "Hesabla",
         results: {
           header: "Hesablanma nəticələri:",
           mass: "AG kütləsi",
@@ -261,7 +293,7 @@
         placeholderVH2O:"unesite zapreminu vode ako je poznata",
         unitWaterTinu: "Jedinica zapremine vode",
         optional: "(opciono)",
-        calculateBtnT: "Izračunaj",
+        calculateBtn: "Izračunaj",
         results: {
           header: "Rezultati izračuna:",
           mass: "Masa AG-a",
@@ -276,6 +308,7 @@
 
     function changeLanguage() {
       const lang = document.getElementById("lang").value;
+      localStorage.setItem('selectedLang', lang);
       const t = translations[lang];
       document.getElementById("title").innerText = t.title;
       document.getElementById("massLabel").innerText = t.massLabel;
@@ -291,8 +324,14 @@
       document.getElementById("VH2O").placeholder = t.placeholderVH2O;
       document.getElementById("optional").innerText = t.optional;
       document.getElementById("tinu").innerText = t.unitWaterTinu;
-      document.getElementById("litrov").innerHTML = t.litrov;
-      document.getElementById("calculateBtnT").innerText = t.calculateBtnT;
+      document.getElementById("calculateBtn").innerText = t.calculateBtn;
+      document.getElementById("footer").innerText = t.footer;
+      document.querySelector("l").textContent = t.litrov;
+      document.querySelector("#VH2OUnit option[value='m3']").textContent = t.cubes;
+      document.querySelector("#VH2OUnit option[value='gal']").textContent = t.gallons;
+      document.querySelector("#mAGUnit option[value='kg']").textContent = t.kg;
+      document.querySelector("#mAGUnit option[value='t']").textContent = t.tons;
+      document.querySelector("#mAGUnit option[value='lb']").textContent = t.pounds;
     }
 
     function parsePercent(value) {
@@ -313,7 +352,13 @@
       const VH2OUnit = document.getElementById("VH2OUnit").value;
 
       if (unit === "t") mAG *= 1000;
-      VH2O = VH2OUnit === "m3" ? parseFloat(VH2O) * 1000 : parseFloat(VH2O);
+      else if (unit === "lb") mAG *= 0.453592;
+      if (VH2OUnit === "m3") VH2O = parseFloat(VH2O) * 1000;
+      else if (VH2OUnit === "gal") VH2O = parseFloat(VH2O) * 3.78541;
+      else VH2O = parseFloat(VH2O);
+
+
+
 
       if (isNaN(mAG) || isNaN(A) || isNaN(w0) || isNaN(w1)) {
         document.getElementById("results").innerHTML = "<strong>⚠️ Please fill all required fields.</strong>";
@@ -341,10 +386,9 @@
     }
 
     window.onload = () => {
-      const savedLang = localStorage.getItem("lang") || "ru";
-      document.getElementById("lang").value = savedLang;
-      changeLanguage();
-    };
+  changeLanguage();
+};
+
 
     document.getElementById("lang").addEventListener("change", () => {
       const lang = document.getElementById("lang").value;
@@ -358,6 +402,9 @@
         if (input.value === '0%') input.value = '0,0%';
       });
     });
+    console.log("Текущий язык:", lang);
+    console.log("Кнопка:", document.getElementById("calculateBtn"));
+    console.log("Текст перевода:", t.calculate);
   </script>
 </body>
 </html>
